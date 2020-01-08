@@ -124,7 +124,6 @@ t.setStyle('red-on-black', {
     'bg-color' : 'gs-0'
 })
 
-
 t.setStyle('blue-on-green', {
     'fg-color' : 'system-lt-blue',
     'bg-color' : 'system-dk-green'

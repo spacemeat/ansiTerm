@@ -1,14 +1,19 @@
-from ansiCommander import AnsiCommander as Ansi
+from .ansiCommander import AnsiCommander as Ansi
+import re
+import os
 
 class AnsiTerm:
-    def __init__(self, useColor = True):
-        self.useColor = useColor
+    pattern = re.compile(r'\<!(\s*[a-zA-Z0-9]+|\/)\s*\>')
+
+    def __init__(self):
+        self.useColor = True
         self.undo_stack = []
         self.states = Ansi.getDefaultStates()
         self.styles = {}
 
     def setStyle(self, name, states):
-        self.styles[name] = states;
+        self.styles[name] = states
+
 
     def pushState(self, states):
         """ Returns the escape string which activates the state change.
@@ -66,8 +71,44 @@ class AnsiTerm:
         else:
             return ''
 
-    def fmt(self, string, states):
-        return "%s%s%s" % (self.pushState(states), string, self.popStates())
+    
+    def getStates(self, string):
+        # Parse the tag to get state data from it.
+        # We currently only support style names.
+        if string == '/':
+            return self.popStates()
+        else:
+            return self.pushState(string)
 
-    def fmt_r(self, string, states):
-        return "%s%s%s" % (self.pushResetState(states), string, self.popStates())
+
+    def print(self, string):    # TODO: duck the system print function
+        built = ''
+        matches = [m for m in AnsiTerm.pattern.finditer(string)]
+        if len(matches) > 0:
+            lastEnd = 0
+            for idx, match in enumerate(matches):
+                states = match.group().strip()[2:-1]
+                if states == '/':
+                    built = ''.join([
+                        built,
+                        string[lastEnd:match.start()],
+                        self.popStates()])
+                else:
+                    built = ''.join([
+                        built,
+                        string[lastEnd:match.start()],
+                        self.pushState(states)])
+                lastEnd = match.end()
+            built = ''.join([built, string[lastEnd:]])
+        else:
+            built = string
+
+        print (built)
+    
+    def makePath(self, path):
+        d, p = os.path.split(path)
+        if d != "" and not d.endswith(os.sep):
+            d = ''.join([d, os.sep])
+        return f'<!pathDir>{d}<!/><!pathBasename>{p}<!/>'
+
+ansiTerm = AnsiTerm()

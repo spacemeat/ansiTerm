@@ -82,12 +82,12 @@ setup(
     # above.
     author_email='spacemeat@gmail.com',  # Optional
 
-    License = 'MIT'
+    License = 'MIT',
 
     # Classifiers help users find your project by categorizing it.
     #
     # For a list of valid classifiers, see https://pypi.org/classifiers/
-    classifiers=[  # Optional
+    classifiers = [  # Optional
         # How mature is this project? Common values are
         #   3 - Alpha
         #   4 - Beta
@@ -146,7 +146,7 @@ setup(
 #        'test': ['coverage'],
 #    },
 
-    python_requires='>=3.4'
+    python_requires='>=3.4',
 
     # If there are data files included in your packages that need to be
     # installed, specify them here.
@@ -157,7 +157,7 @@ setup(
 #        'sample': ['package_data.dat'],
 #    },
 
-    py_modules=['ansiCommander', 'ansiTerm']
+    py_modules=['ansiCommander', 'ansiTerm'],
 
     # Although 'package_data' is the preferred approach, in some case you may
     # need to place data files outside of your packages. See:

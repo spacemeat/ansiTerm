@@ -245,7 +245,7 @@ class AnsiCommander:
     def applyChangesToStateSet(baseStates, newStates):
         for state in newStates:
             if state[1] != 'none':
-                baseStates[state[0]] = state[1];
+                baseStates[state[0]] = state[1]
 
     @staticmethod
     def makeSetAndUndoCommands(baseStates, newStates):
